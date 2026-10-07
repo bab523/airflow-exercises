@@ -1,0 +1,16 @@
+from airflow import DAG
+from airflow.operators.bash import BashOperator
+from datetime import datetime
+
+with DAG(
+    dag_id="etl_ui_practice",
+    start_date=datetime(2026, 9, 1),
+    schedule=None,
+    catchup=False
+) as dag:
+    extract = BashOperator(task_id="extract", bash_command="echo 'Extracting data'")
+    transform = BashOperator(task_id="transform", bash_command="echo 'Transforming data'")
+    load = BashOperator(task_id="load", bash_command="echo 'Loading data'")
+    notify = BashOperator(task_id="notify", bash_command="echo 'Sending notification'")
+
+    extract >> transform >> load >> notify
